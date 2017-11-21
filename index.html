@@ -15,24 +15,34 @@
   <div class="grid-x grid-margin-x">
     <div class="cell small-6">
       <form >
-        <p>Name : <input type="text" ng-model="name"></p>
-        <p>Age : <input type="text" ng-model="age"></p>
-        <p>First Number : <input type="text" ng-model="first_number"></p>
-        <p>Last Number : <input type="text" ng-model="last_number"></p>
+        <p>Name : <input ng-keydown="getName()" type="text" ng-model="name"></p>
+        <p>Age : <input  type="text" ng-model="age"></p>
+        <br><br>
+        <h5>Add Two Numbers</h5><hr>
+        <p>First Number : <input  type="text" ng-model="first_number"></p>
+        <p>Last Number : <input  type="text" ng-model="last_number"></p>
+
       </form>
     </div>
     <div class="cell small-6">
-      <h1 ng-if="name != ''">Hallo {{name | uppercase}}</h1>
+      <h4 ng-if="name != ''">Hallo {{name | uppercase}}, how is your day going?</h4>
         <ul>
-          <li>In 10 years you will be: {{age + 10}}</li>
-          <li>In 20 years you will be: {{age + 20}}</li>
-          <li>In 30 years you will be: {{age + 30}}</li>
+          <li ng-if="age != '0'">In 10 years you will be: {{age + 10}}</li>
+          <li ng-if="age != '0'">In 20 years you will be: {{age + 20}}</li>
+          <li ng-if="age != '0'">In 30 years you will be: {{age + 30}}</li>
         </ul>
-        <h3>Multiplying Number One and Two</h3>
+        <h7>Multiplying Number One and Two</h7>
         <hr>
         <table class="hover">
+          <tr >
+
+            <p ng-if="first_number != '' && first_number != '' ">{{first_number * last_number}}</p>
+            <p ng-if="first_number != '' ">
+              <button ng-click="getPV()" type="button" class="success button">Get Place Value</button>
+            </p>
+          </tr>
           <tr>
-            {{first_number * last_number}}
+            {{pv}}
           </tr>
         </table>
     </div>
@@ -47,13 +57,56 @@
 <script src="assets/js/app.js"></script>
 <script >
 var adding = angular.module('adding_no', []);
-adding.controller('adding_no_ctrl', function($scope) {
+adding.controller('adding_no_ctrl', function($scope, MyService, PlaceV) {
     $scope.name = ""
     $scope.age = 0
-    $scope.first_number = 0;
-    $scope.last_number = 0;
+    $scope.first_number = '';
+    $scope.last_number = '';
+    $scope.getName = function(){
+      $scope.greetings = MyService.sayHello($scope.name);
+    }
+
+    $scope.getPV = function(){
+      $scope.pv = PlaceV.placeValue($scope.first_number, $scope.last_number);
+    }
 
 
+
+});
+
+
+adding.service('MyService', function() {
+  this.sayHello = function(nam) {
+     return "Hi " + nam + "!";
+  };
+});
+
+adding.factory('PlaceV', function () {
+
+  return {placeValue:function(num1, num2) {
+    var multi = num1 * num2;
+    if(multi >= 1000){
+      var hun_thou = "Hundreds Thousands is: " + Math.floor((multi % 1000000) / 100000);
+      var ten_thou = "Ten Thousands is: " + Math.floor((multi % 100000) / 10000);
+      var thou = "Thousands is: " +Math.floor((multi % 10000) / 1000);
+      var hun ="Hundreds is: " + Math.floor((multi % 1000) / 100);
+      var ten = "Tens is: " + Math.floor((multi % 100) / 10);
+      var ones ="Ones is: "+  Math.floor((multi % 10) / 1);
+
+      return hun_thou + " " + ten_thou + " " + thou + " "  + hun + " " + ten + " " + ones;
+    }else{
+      var hun ="Hundreds is: " + Math.floor(multi / 100);
+      var ten = "Tens is: " + Math.floor((multi % 100) / 10);
+      var ones ="Ones is: "+  Math.floor((multi % 10) / 1);
+
+      return  hun + "    " + ten + "    " + ones;
+    }
+
+    return
+
+
+    }
+  }
 
 });
 </script>
