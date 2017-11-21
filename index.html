@@ -1,0 +1,61 @@
+<!doctype html>
+<html class="no-js" lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/css/foundation.css">
+    <link rel="stylesheet" href="assets/css/app.css">
+    <title>Home | Angular Application </title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+</head>
+<body>
+
+<div class="grid-container" ng-app="adding_no"  ng-controller="adding_no_ctrl">
+  <div class="grid-x grid-margin-x">
+    <div class="cell small-6">
+      <form >
+        <p>Name : <input type="text" ng-model="name"></p>
+        <p>Age : <input type="text" ng-model="age"></p>
+        <p>First Number : <input type="text" ng-model="first_number"></p>
+        <p>Last Number : <input type="text" ng-model="last_number"></p>
+      </form>
+    </div>
+    <div class="cell small-6">
+      <h1 ng-if="name != ''">Hallo {{name | uppercase}}</h1>
+        <ul>
+          <li>In 10 years you will be: {{age + 10}}</li>
+          <li>In 20 years you will be: {{age + 20}}</li>
+          <li>In 30 years you will be: {{age + 30}}</li>
+        </ul>
+        <h3>Multiplying Number One and Two</h3>
+        <hr>
+        <table class="hover">
+          <tr>
+            {{first_number * last_number}}
+          </tr>
+        </table>
+    </div>
+  </div>
+
+</div>
+
+
+<script src="assets/js/vendor/jquery.js"></script>
+<script src="assets/js/vendor/what-input.js"></script>
+<script src="assets/js/vendor/foundation.js"></script>
+<script src="assets/js/app.js"></script>
+<script >
+var adding = angular.module('adding_no', []);
+adding.controller('adding_no_ctrl', function($scope) {
+    $scope.name = ""
+    $scope.age = 0
+    $scope.first_number = 0;
+    $scope.last_number = 0;
+
+
+
+});
+</script>
+</body>
+</html>
